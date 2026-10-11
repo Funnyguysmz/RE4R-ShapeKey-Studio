@@ -1,0 +1,13 @@
+build/
+output/
+cache/
+backups/
+*.pdb
+*.lib
+*.dll
+*.exe
+*.zip
+Studio.settings.ini
+installer.log
+.env*
+*.preset.tsv

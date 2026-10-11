@@ -1,0 +1,77 @@
+K	SK__sn.eye_close_L	闭眼 左	eye	0	0	1	1	目
+K	SK__sn.eye_joy_L	笑眼 左	eye	0	0	1	1	目
+K	SK__sn.eye_close_R	闭眼 右	eye	0	0	1	1	目
+K	SK__sn.eye_joy_R	笑眼 右	eye	0	0	1	1	目
+K	SK__sn.eye_nagomi1	眯眼	eye	0	0	1	1	目
+K	SK__sn.eye_zitome1	半眯眼	eye	0	0	1	1	目
+K	SK__sn.eye_halfclose	半闭眼	eye	0	0	1	1	目
+K	SK__sn.eye_sleepy	困倦眼	eye	0	0	1	1	目
+K	SK__sn.eye_surprise	惊讶睁眼	eye	0	0	1	1	目
+K	SK__sn.eye_sad	伤心眼	eye	0	0	1	1	目
+K	SK__sn.eye_angry	生气眼	eye	0	0	1	1	目
+K	SK__sn.pupil_big	瞳孔放大	eye	0	0	1	1	目
+K	SK__sn.pupil_small	瞳孔缩小	eye	0	0	1	1	目
+K	SK__sn.eye_xx	><眼	effect	0	0	1	1	特效
+K	SK__sn.eye_heart	爱心眼	effect	0	0	1	1	特效
+K	SK__sn.eye_kirakira	闪闪眼	effect	0	0	1	1	特效
+K	SK__sn.eye_guruguru	转圈眼	effect	0	0	1	1	特效
+K	SK__sn.eye_whiteeye	白眼	effect	0	0	1	1	特效
+K	SK__sn.eye_look_left	看向左	gaze	0	0	1	1	视线
+K	SK__sn.eye_look_right	看向右	gaze	0	0	1	1	视线
+K	SK__sn.eye_look_up	看向上	gaze	0	0	1	1	视线
+K	SK__sn.eye_look_down	看向下	gaze	0	0	1	1	视线
+K	SK__sn.mouth_a1	口型 あ	mouth	0	0	1	1	口
+K	SK__sn.mouth_i1	口型 い	mouth	0	0	1	1	口
+K	SK__sn.mouth_u1	口型 う	mouth	0	0	1	1	口
+K	SK__sn.mouth_e1	口型 え	mouth	0	0	1	1	口
+K	SK__sn.mouth_o1	口型 お	mouth	0	0	1	1	口
+K	SK__sn.mouth_narrow	嘴收窄	mouth	0	0	1	1	口
+K	SK__sn.mouth_hawa	はわ嘴	mouth	0	0	1	1	口
+K	SK__sn.mouth_wa	口型 ワ	mouth	0	0	1	1	口
+K	SK__sn.tongue_pero	吐舌	mouth	0	0	1	1	口
+K	SK__sn.mouth_omega	ω嘴	mouth	0	0	1	1	口
+K	SK__sn.mouth_tri	三角嘴	mouth	0	0	1	1	口
+K	SK__sn.mouth_square	方嘴	mouth	0	0	1	1	口
+K	SK__sn.mouth_lambda	Λ嘴	mouth	0	0	1	1	口
+K	SK__sn.mouth_smile_L	嘴角上扬 左	mouth	0	0	1	1	口
+K	SK__sn.mouth_sad_L	嘴角下垂 左	mouth	0	0	1	1	口
+K	SK__sn.mouth_wide_L	嘴横拉 左	mouth	0	0	1	1	口
+K	SK__sn.mouth_grin1_L	咧嘴笑 左	mouth	0	0	1	1	口
+K	SK__sn.pout_L	鼓腮 左	mouth	0	0	1	1	口
+K	SK__sn.eyebrow_sad1_L	困扰眉 左	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_angry1_L	生气眉 左	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_up_L	眉上 左	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_down_L	眉下 左	brow	0	0	1	1	眉
+K	SK__sn.mouth_smile_R	嘴角上扬 右	mouth	0	0	1	1	口
+K	SK__sn.mouth_sad_R	嘴角下垂 右	mouth	0	0	1	1	口
+K	SK__sn.mouth_wide_R	嘴横拉 右	mouth	0	0	1	1	口
+K	SK__sn.mouth_grin1_R	咧嘴笑 右	mouth	0	0	1	1	口
+K	SK__sn.pout_R	鼓腮 右	mouth	0	0	1	1	口
+K	SK__sn.eyebrow_sad1_R	困扰眉 右	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_angry1_R	生气眉 右	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_up_R	眉上 右	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_down_R	眉下 右	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_joy	开心眉	brow	0	0	1	1	眉
+K	SK__sn.eyebrow_surprised	惊讶眉	brow	0	0	1	1	眉
+K	SK__sn.cheek_1	脸红	effect	0	0	1	1	特效
+K	SK__sn.cheek_2	脸红 2	effect	0	0	1	1	特效
+K	SK__sn.tear_1	流泪	effect	0	0	1	1	特效
+K	SK__sn.sweat_1	流汗	effect	0	0	1	1	特效
+K	SK__sn.shadow	阴影（がーん）	effect	0	0	1	1	特效
+K	SK__sn.option_face_loli	童颜	shape	0	0	1	1	捏脸
+K	SK__sn.option_face_otona	成熟脸	shape	0	0	1	1	捏脸
+K	SK__sn.option_contour_sharp	尖脸	shape	0	0	1	1	捏脸
+K	SK__sn.option_contour_maru	圆脸	shape	0	0	1	1	捏脸
+K	SK__sn.eye_size_big	大眼	shape	0	0	1	1	捏脸
+K	SK__sn.eye_size_small	小眼	shape	0	0	1	1	捏脸
+K	SK__sn.option_jaw_long	下巴长	shape	0	0	1	1	捏脸
+K	SK__sn.option_jaw_short	下巴短	shape	0	0	1	1	捏脸
+K	SK__sn.breast_big	胸部放大	body	0.35	0.35	1	2	身体
+K	SK__sn.breast_flat	胸部缩小（平）	body	0	0	1	2	身体
+K	SK__sn.hip_big	臀部放大	body	0.2	0.2	1	2	身体
+K	SK__sn.length_long	衣裙加长	outfit	0.15	0.15	1	2	服装
+K	SK__sn.length_short	衣裙缩短	outfit	0	0	1	2	服装
+K	SK__sn.bangs_long	刘海加长	hair	0	0	1	3	头发
+K	SK__sn.bangs_short	刘海缩短	hair	0	0	1	3	头发
+K	SK__sn.ear_long	兽耳加长	hair	0	0	1	3	兽耳
+K	SK__sn.ear_droop	兽耳垂下	hair	0	0	1	3	兽耳
