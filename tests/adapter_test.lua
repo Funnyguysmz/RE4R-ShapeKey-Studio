@@ -28,6 +28,27 @@ shapekey_desktop={poll=function()local s=queue queue='' return s end,publish=fun
 local checks=[[
 local function run(cmd)queue=cmd or '';callback() end
 local t=desktop_identity()
+local smooth,calls=0.5,0
+RE4R_ShapeKeySystem_api={mesh_status=function()return {} end,
+    get_cap_smooth=function()return smooth end,
+    set_cap_smooth=function(n)smooth=n;calls=calls+1;return true end}
+local function smooth_cmd(value,token)run('C\t'..(token or t)..'\tcap_smooth\t\t'..value..'\n') end
+smooth_cmd('0.72');assert(smooth==0.72 and not desktop_owned)
+smooth_cmd('9');assert(smooth==1)
+smooth_cmd('-9');assert(smooth==0.05)
+local before=calls
+for _,v in ipairs({'nan','inf','1e999','bad',''})do smooth_cmd(v) end
+smooth_cmd('0.8','BAD');assert(calls==before)
+for i=1,6 do run() end
+assert(published:find('C\t0.0500\n',1,true))
+smooth=math.huge;for i=1,6 do run() end
+assert(not published:find('\nC\t',1,true))
+RE4R_ShapeKeySystem_api={mesh_status=function()return {} end}
+smooth_cmd('0.8');for i=1,6 do run() end
+assert(calls==before and not published:find('\nC\t',1,true))
+RE4R_ShapeKeySystem_api=nil
+print('ADAPTER_CAP_SMOOTH_COMMAND_SNAPSHOT_RANGE_FINITE_LEGACY_PASS')
+desktop_ticks=0
 run('C\t'..t..'\tstart\t\t\nC\t'..t..'\tset\tjaw\t0.75\n')
 assert(S.enabled and S.values.jaw==0.75 and desktop_owned)
 run('C\tBAD\tset\tjaw\t0.1\n');assert(S.values.jaw==0.75)

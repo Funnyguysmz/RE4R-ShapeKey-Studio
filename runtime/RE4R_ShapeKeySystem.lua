@@ -1,9 +1,9 @@
--- RE4R ShapeKey System / 形态键系统 0.3.0 (Claude)
+-- RE4R ShapeKey System / 形态键系统 0.4.4 (Claude)
 -- Drives the custom shape-key channels of a character mod's head mesh. The mod ships
 -- reframework/data/RE4R_ShapeKeySystem_profile.json (key ids, hashes, labels, regions).
 -- Channels are bound by engine name hash, never by index. Native Leon channels in the same mesh
 -- (zero-delta "taps") are only read, never written.
-local VERSION = '0.4.2'
+local VERSION = '0.4.4'
 local DIAG_FILE = 'RE4R_ShapeKeySystem_diag.json'
 local PROFILE_FILE = 'RE4R_ShapeKeySystem_profile.json'
 local SETTINGS_FILE = 'RE4R_ShapeKeySystem_settings.json'
@@ -12,7 +12,7 @@ local NATIVE_FILE = 'RE4R_ShapeKeySystem_native_leon.json'     -- Leon facial ri
 
 local profile, keys, taps, key_by_id = nil, {}, {}, {}
 local regions = {}
-local S = {enabled = false, force_lod0 = true, show_window = true, page = 1, strength = 1.0, region = {},
+local S = {enabled = false, force_lod0 = true, auto_alloc = true, show_window = true, page = 1, strength = 1.0, region = {},
     values = {}, preset = '', library = 1, group = 1, filter = '', only_active = false,
     source = 3, native_gain = 1.0, cap_gain = 1.0, cap_smooth = 0.5}          -- source: 1 manual, 2 native animation, 3 native + manual offsets
 local SOURCES = {'手动', '原生动画', '原生动画 + 手动微调', '面捕（RhyLive）+ 手动微调', '面捕，断流时回落原生动画'}
@@ -69,7 +69,7 @@ local function load_profile()
     return true
 end
 local function save_settings()
-    local data = {version = VERSION, enabled = S.enabled, force_lod0 = S.force_lod0, show_window = S.show_window,
+    local data = {version = VERSION, enabled = S.enabled, auto_alloc = S.auto_alloc, force_lod0 = S.force_lod0, show_window = S.show_window,
         strength = S.strength, region = S.region, values = S.values, preset = S.preset, library = S.library,
         source = S.source, native_gain = S.native_gain, cap_gain = S.cap_gain, cap_smooth = S.cap_smooth}
     try(json.dump_file, SETTINGS_FILE, data)
@@ -77,7 +77,7 @@ end
 local function load_settings()
     local ok, d = pcall(json.load_file, SETTINGS_FILE)
     if ok and type(d) == 'table' then
-        for _, k in ipairs({'force_lod0', 'show_window', 'preset', 'library', 'source', 'native_gain', 'cap_gain', 'cap_smooth'}) do
+        for _, k in ipairs({'auto_alloc', 'force_lod0', 'show_window', 'preset', 'library', 'source', 'native_gain', 'cap_gain', 'cap_smooth'}) do
             if d[k] ~= nil then S[k] = d[k] end
         end
         if finite(d.strength) then S.strength = d.strength end
@@ -257,21 +257,41 @@ local function target_weight(k)
     end
     return clamp(w * S.strength * region_gain(k), 0, 1)
 end
+-- Size an extra mesh's weight array to its channel count (what the debug button did by hand in the 0.4.1 test).
+-- Only when the managed weight list already has every channel; true when the count now covers all channels.
+local function allocate_mesh(e)
+    local wl = call(e.mesh, 'get_ChannelWeightList'); local n = wl and tonumber(call(wl, 'get_Length'))
+    if not finite(n) or n < e.count then return false end
+    local ok, err = pcall(function() e.mesh:call('set_BlendShapeChannelWeightCount', e.count) end)
+    if not ok then last_error = 'set_BlendShapeChannelWeightCount 失败：' .. tostring(err); return false end
+    local wc = tonumber(call(e.mesh, 'get_BlendShapeChannelWeightCount'))
+    return finite(wc) and wc >= e.count
+end
+local function allocate_extras(force)
+    if not bind then return 0 end
+    local done = 0
+    for mi, e in ipairs(bind.meshes) do
+        local wc = tonumber(call(e.mesh, 'get_BlendShapeChannelWeightCount'))
+        if mi > 1 and (not finite(wc) or wc < e.count) and (force or (S.auto_alloc and frame >= (e.next_alloc or 0))) then
+            e.next_alloc = frame + 60
+            if allocate_mesh(e) then done = done + 1 end
+        end
+    end
+    if done > 0 then refresh_limit() end
+    return done
+end
 local function write_all(force_zero)
     if not bind then return end
     local t0 = os.clock()
     -- The weight array is allocated lazily (0 right after entering a level, full size a little later; 2026-10-11
     -- game test). Re-check it every frame immediately before writing so a write can never land outside it.
-    for mi, e in ipairs(bind.meshes) do
+    -- Only Leon's head has chainsaw.FacialController_cha0, which sizes the weight array; body / hair meshes stay 0.
+    -- 0.4.3: 0.4.2 tried once against a cached list length (still 0 at bind time) and never again; now the list
+    -- length is read live and the attempt repeats every second while the count is short.
+    allocate_extras(false)
+    for _, e in ipairs(bind.meshes) do
         local wc = tonumber(call(e.mesh, 'get_BlendShapeChannelWeightCount'))
         if not finite(wc) then wc = 0 end
-        -- 0.4.2: only Leon's head has chainsaw.FacialController_cha0, which sizes the weight array; body / hair meshes stay 0.
-        -- Setting the count ourselves is game-verified safe (Shinano) when the managed weight list already has every channel.
-        if mi > 1 and wc < e.count and e.weight_list == e.count and not e.forced then
-            e.forced = true
-            pcall(function() e.mesh:call('set_BlendShapeChannelWeightCount', e.count) end)
-            wc = tonumber(call(e.mesh, 'get_BlendShapeChannelWeightCount')) or 0
-        end
         if wc ~= e.weight_count then refresh_limit() end
         if wc < e.limit then e.limit = wc end
     end
@@ -521,6 +541,7 @@ re.on_application_entry('PrepareRendering', function()
             unbind('玩家头部已变化，正在重新绑定。'); bind_retry = frame + 10
         elseif frame % 60 == 30 then
             refresh_limit()
+            allocate_extras(false)         -- also while driving is off, so sliders work as soon as it is enabled
         elseif frame % 300 == 170 and (bind.unbound or 0) > 0 then   -- 170: not a % 60 == 0/30 frame
             attach_extras()                -- body / hair meshes can load after the head
         end
@@ -772,6 +793,8 @@ local function page_debug()
     local c1; c1, S.force_lod0 = imgui.checkbox('驱动时强制 LOD0（形态键只在 LOD0 生效）##sks_lod', S.force_lod0)
     if c1 then touch_settings() end
     if imgui.button('重新扫描头部##sks_rescan') then unbind(nil); bind_retry = 0 end
+    local c2; c2, S.auto_alloc = imgui.checkbox('身体/头发网格：自动分配权重数组##sks_autoalloc', S.auto_alloc)
+    if c2 then touch_settings() end
     if bind then
         imgui.text(string.format('被禁止的键=%d', bind.blocked or 0))
         for mi, e in ipairs(bind.meshes) do
@@ -780,7 +803,7 @@ local function page_debug()
                 tostring(call(e.mesh, 'get_LodLevel'))))
             if (e.limit or 0) < e.count then
                 imgui.same_line()
-                if imgui.button(string.format('实验：设置 WeightCount = 通道数（可能崩溃，先存档）##sks_setwc%d', mi)) then
+                if imgui.button(string.format('手动：设置 WeightCount = 通道数##sks_setwc%d', mi)) then
                     local ok, err = pcall(function() e.mesh:call('set_BlendShapeChannelWeightCount', e.count) end)
                     if not ok then last_error = 'set_BlendShapeChannelWeightCount 失败：' .. tostring(err) end
                     refresh_limit()
@@ -881,6 +904,41 @@ re.on_frame(function()
     imgui.end_window()
     if open == false then S.show_window = false; touch_settings() end
 end)
+
+-- 0.4.4 public interface for other REFramework scripts (e.g. the desktop GUI bridge):
+--   local api = rawget(_G, 'RE4R_ShapeKeySystem_api')
+--   api.mesh_status()            -> { {index, name, channels, weight_count, weight_list, limit, ready}, ... } (index 1 = head)
+--   api.allocate_weights(i)      -> number of meshes now sized; i = mesh index (> 1), nil = all body / hair meshes
+--   api.get_auto_allocate() / api.set_auto_allocate(bool)   (saved in the settings file)
+RE4R_ShapeKeySystem_api = {
+    version = VERSION,
+    mesh_status = function()
+        local out = {}
+        for mi, e in ipairs(bind and bind.meshes or {}) do
+            local wc = tonumber(call(e.mesh, 'get_BlendShapeChannelWeightCount'))
+            local wl = call(e.mesh, 'get_ChannelWeightList')
+            out[mi] = {index = mi, name = tostring(call(e.go, 'get_Name') or '?'), channels = e.count, weight_count = wc,
+                weight_list = wl and tonumber(call(wl, 'get_Length')), limit = e.limit or 0, ready = finite(wc) and wc >= e.count}
+        end
+        return out
+    end,
+    allocate_weights = function(i)
+        if not bind then return 0 end
+        if i == nil then return allocate_extras(true) end
+        local e = bind.meshes[i]
+        if not e or i == 1 then return 0 end
+        local ok = allocate_mesh(e); refresh_limit(); return ok and 1 or 0
+    end,
+    get_auto_allocate = function() return S.auto_alloc end,
+    set_auto_allocate = function(v) S.auto_alloc = v and true or false; touch_settings() end,
+    -- 0.4.4: capture smoothing (EMA factor per RhyLive sample, 0.05..1; higher = more responsive)
+    get_cap_smooth = function() return S.cap_smooth end,
+    set_cap_smooth = function(v)
+        v = tonumber(v)
+        if not v or v ~= v or v == math.huge or v == -math.huge then return false end
+        S.cap_smooth = math.max(0.05, math.min(1, v)); touch_settings(); return true
+    end,
+}
 
 load_profile()
 load_settings()

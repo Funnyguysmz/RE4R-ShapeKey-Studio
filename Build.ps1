@@ -1,6 +1,8 @@
 param([string]$Zig='zig',[Parameter(Mandatory=$true)][string]$LuaSourceDirectory)
 $ErrorActionPreference='Stop'
 $root=$PSScriptRoot
+$apiHeader=Join-Path $root 'vendor\REFramework\API.h'
+if(!(Test-Path -LiteralPath $apiHeader -PathType Leaf)){throw "Missing bundled REFramework header: $apiHeader. Restore vendor\REFramework\API.h from the source checkout."}
 $lua=[IO.Path]::GetFullPath($LuaSourceDirectory)
 if(!(Test-Path -LiteralPath "$lua\lapi.c")){throw 'LuaSourceDirectory must contain Lua 5.4 lapi.c and lua.h'}
 $out=Join-Path $root 'build'

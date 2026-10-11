@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE4R ShapeKey Studio</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+  <!-- ============================================================ setup -->
+  <section id="setup" class="view">
+    <header class="topbar">
+      <div class="brand"><img src="Studio_icon.png" alt=""><div><span>RE4R ShapeKey Studio</span><small data-i18n="app_sub"></small></div></div>
+      <div class="spacer"></div>
+      <button class="ghost icon-btn" id="themeBtn1" data-action="theme" title=""><svg viewBox="0 0 24 24"><use href="#i-theme"/></svg></button>
+      <button class="ghost chip-btn" data-action="lang">中文 / EN</button>
+    </header>
+    <div class="setup-body">
+      <aside class="stepper">
+        <div class="step" data-step="1"><b>1</b><span data-i18n="step_dir"></span></div>
+        <div class="step" data-step="2"><b>2</b><span data-i18n="step_install"></span></div>
+        <div class="step" data-step="3"><b>3</b><span data-i18n="step_capture"></span></div>
+        <div class="stepper-foot" id="setupVersion"></div>
+      </aside>
+      <main class="setup-main">
+        <h1 data-i18n="setup_title"></h1>
+        <p class="lead" data-i18n="setup_lead"></p>
+        <div class="setup-grid">
+          <div class="col">
+            <article class="card rise">
+              <h2 data-i18n="dir_title"></h2>
+              <p class="muted" data-i18n="dir_hint"></p>
+              <div class="field"><input id="dirInput" spellcheck="false" placeholder="D:\SteamLibrary\steamapps\common\RESIDENT EVIL 4  BIOHAZARD RE4"></div>
+              <div class="row2">
+                <button class="primary" data-action="browse"><svg viewBox="0 0 24 24"><use href="#i-folder"/></svg><span data-i18n="browse"></span></button>
+                <button class="secondary" data-action="validate"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span data-i18n="validate"></span></button>
+              </div>
+              <div class="state-box" id="dirState"><span class="dot"></span><span id="dirStateText"></span></div>
+            </article>
+            <article class="card rise">
+              <h2 data-i18n="install_title"></h2>
+              <p class="muted pre" data-i18n="install_hint"></p>
+              <button class="primary wide" id="installBtn" data-action="install"><span class="spinner"></span><span id="installText" data-i18n="install_btn"></span></button>
+            </article>
+          </div>
+          <div class="col">
+            <article class="card rise receiver-card" id="receiverCardSetup"></article>
+          </div>
+        </div>
+        <footer class="setup-foot">
+          <p class="muted" id="setupMsg"></p>
+          <button class="primary enter" id="enterBtn" data-action="enter"><span data-i18n="enter"></span><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+        </footer>
+      </main>
+    </div>
+  </section>
+
+  <!-- ============================================================ workbench -->
+  <section id="bench" class="view hidden">
+    <header class="topbar">
+      <div class="brand"><img src="Studio_icon.png" alt=""><div><span>RE4R ShapeKey Studio</span><small data-i18n="app_sub"></small></div></div>
+      <div class="model-chip"><img src="Studio_icon.png" alt=""><div><span id="modelName">—</span><small id="modelCount"></small></div></div>
+      <div class="conn" id="conn"><span class="dot"></span><div><span id="connText"></span><small id="connSub"></small></div></div>
+      <div class="spacer"></div>
+      <div class="select" id="sourceSelect">
+        <button class="select-btn" data-action="source-open"><small data-i18n="source"></small><span id="sourceText"></span><svg viewBox="0 0 24 24"><use href="#i-chevron"/></svg></button>
+        <div class="select-pop" id="sourcePop"></div>
+      </div>
+      <div class="gain"><small data-i18n="strength"></small><div class="mini-slider" id="gainSlider"></div><span class="num" id="gainText">1.00</span></div>
+      <button class="control-btn" id="controlBtn" data-action="control"><svg viewBox="0 0 24 24"><use href="#i-play"/></svg><span id="controlText"></span></button>
+      <button class="ghost icon-btn" id="pinBtn" data-action="topmost" data-i18n-title="topmost" aria-pressed="false"><svg viewBox="0 0 24 24"><use href="#i-pin"/></svg></button>
+      <button class="ghost icon-btn" data-action="theme" data-i18n-title="theme"><svg viewBox="0 0 24 24"><use href="#i-theme"/></svg></button>
+      <button class="ghost chip-btn" data-action="lang"><svg viewBox="0 0 24 24"><use href="#i-globe"/></svg><span id="langText"></span></button>
+    </header>
+    <div class="bench-body">
+      <nav class="sidebar" id="nav">
+        <div class="nav-scroll" id="navScroll"><div class="nav-pill" id="navPill"></div><div id="navItems"></div></div>
+        <div class="nav-bottom">
+          <button class="conn-card" id="connCard" data-action="page" data-page="diag"><span class="dot"></span><div><b id="connCardText"></b><small id="connCardSub"></small></div></button>
+          <div class="ver" id="verText"></div>
+        </div>
+      </nav>
+      <main class="content">
+        <div class="content-head">
+          <div class="page-icon" id="pageIcon"></div>
+          <div class="title-wrap"><h1 id="pageTitle"></h1><p class="muted" id="pageSub"></p></div>
+          <div class="head-actions" id="headActions">
+            <button class="secondary sm" data-action="zero-page"><svg viewBox="0 0 24 24"><use href="#i-reset"/></svg><span data-i18n="zero_page"></span></button>
+            <button class="secondary sm" data-action="copy"><svg viewBox="0 0 24 24"><use href="#i-copy"/></svg><span data-i18n="copy"></span></button>
+            <button class="secondary sm" data-action="paste"><svg viewBox="0 0 24 24"><use href="#i-paste"/></svg><span data-i18n="paste"></span></button>
+          </div>
+        </div>
+        <div class="subhead"><label class="search"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg><input id="search" spellcheck="false"></label><span class="badge" id="pageBadge"></span><span class="hint" id="ownHint"></span><span class="spacer"></span><div class="sub-actions" id="subActions"><button class="secondary toggle sm" id="compareBtn" data-action="compare"><svg viewBox="0 0 24 24"><use href="#i-compare"/></svg><span data-i18n="compare"></span></button><button class="secondary toggle sm" id="sweepBtn" data-action="sweep"><svg viewBox="0 0 24 24"><use href="#i-sweep"/></svg><span data-i18n="sweep"></span></button></div></div>
+        <div class="page-host" id="pageHost"><div class="page" id="page"></div></div>
+      </main>
+      <aside class="inspector">
+        <div class="portrait"><img src="Studio_icon.png" alt=""><div class="portrait-name" id="portraitName">—</div></div>
+        <div class="card detail" id="detail"></div>
+      </aside>
+    </div>
+  </section>
+</div><div id="toasts"></div>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-face" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.8 14.2c1.7 1.9 4.7 1.9 6.4 0"/><path d="M9.2 9.8h.01M14.8 9.8h.01"/></symbol>
+    <symbol id="i-shape" viewBox="0 0 24 24"><path d="M12 3.5c4.2 0 7 3.3 7 7.6 0 4.6-3.3 9.4-7 9.4s-7-4.8-7-9.4c0-4.3 2.8-7.6 7-7.6z"/><path d="M9 4.6c.3 2.6 2 4 5.9 4.5"/></symbol>
+    <symbol id="i-body" viewBox="0 0 24 24"><path d="M9.5 3.5h5l-.8 3.3 3.8 12.7h-11l3.8-12.7z"/><path d="M8.6 11.5h6.8"/></symbol>
+    <symbol id="i-hair" viewBox="0 0 24 24"><path d="M5 20c-.6-6 .4-12.6 7-13.4 6.6.8 7.6 7.4 7 13.4"/><path d="M5.7 9.6 4 3.8l4.6 2.7M18.3 9.6 20 3.8l-4.6 2.7"/><path d="M9 11.5c1.6.4 4.4.4 6 0"/></symbol>
+    <symbol id="i-preset" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2.5"/><path d="M4 9.5h16M8 13.5h4"/></symbol>
+    <symbol id="i-capture" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M10.5 6h3"/><circle cx="12" cy="13" r="2.6"/></symbol>
+    <symbol id="i-diag" viewBox="0 0 24 24"><path d="M3.5 12h3.6l2.3-5.5 4.2 11 2.4-5.5h4.5"/></symbol>
+    <symbol id="i-setup" viewBox="0 0 24 24"><path d="M4 7.5h9M17 7.5h3M4 16.5h3M11 16.5h9"/><circle cx="15" cy="7.5" r="2"/><circle cx="9" cy="16.5" r="2"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v7.8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.8v12.4L18 12z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M5 12a7 7 0 1 0 2.1-5"/><path d="M5 4.5V9h4.5"/></symbol>
+    <symbol id="i-compare" viewBox="0 0 24 24"><path d="M12 4v16M5 8h5l-2.5 6.5L5 8zM14 8h5l-2.5 6.5L14 8z"/></symbol>
+    <symbol id="i-sweep" viewBox="0 0 24 24"><path d="M4 17c3-9 5-9 8 0s5 9 8 0"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4.5h11l3 3V19a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1z"/><path d="M8 4.5V9h7V4.5M8 20v-6h8v6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 5.2 3.2 3.3v1.8H6.8V12L10 8.7z"/><path d="M12 13.8V20.5"/></symbol>
+    <symbol id="i-theme" viewBox="0 0 24 24"><path d="M19.5 14.6A7.8 7.8 0 0 1 9.4 4.5 7.8 7.8 0 1 0 19.5 14.6z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5.5" y="10.5" width="13" height="9" rx="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.4 3.4 5.3 3.4 8.5s-1 6.1-3.4 8.5c-2.4-2.4-3.4-5.3-3.4-8.5s1-6.1 3.4-8.5z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol>
+    <symbol id="i-paste" viewBox="0 0 24 24"><rect x="5.5" y="5" width="13" height="15.5" rx="2"/><path d="M9 5V3.8h6V5M9 11h6M9 14.5h4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.8 12s3.4-6 9.2-6 9.2 6 9.2 6-3.4 6-9.2 6-9.2-6-9.2-6z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+    <symbol id="i-mouth" viewBox="0 0 24 24"><path d="M4.5 11c2.5 1.2 5 1.7 7.5 1.7s5-.5 7.5-1.7c-1.4 4.2-4.3 6.3-7.5 6.3S5.9 15.2 4.5 11z"/><path d="M4.5 11c2.2-1.6 4.2-2.6 7.5-1.1 3.3-1.5 5.3-.5 7.5 1.1"/></symbol>
+    <symbol id="i-brow" viewBox="0 0 24 24"><path d="M3.5 10c2.5-2.3 5.4-2.8 7.6-1.6M20.5 10c-2.5-2.3-5.4-2.8-7.6-1.6"/><path d="M6 15.5h.01M18 15.5h.01"/></symbol>
+    <symbol id="i-gaze" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="15" cy="10.5" r="2.4"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6-5.6-1.9 5.6-1.9z"/><path d="M18.5 16.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+    <symbol id="i-ear" viewBox="0 0 24 24"><path d="M6 20 5 4l6.5 6M18 20l1-16-6.5 6"/></symbol>
+    <symbol id="i-hanger" viewBox="0 0 24 24"><path d="M12 7.2V6a2 2 0 1 1 2 2"/><path d="m12 7.2-8.4 6.6a1.3 1.3 0 0 0 .8 2.3h15.2a1.3 1.3 0 0 0 .8-2.3z"/></symbol>
+    <symbol id="i-nail" viewBox="0 0 24 24"><path d="M8 20v-8.5C8 8 9.6 5 12 5s4 3 4 6.5V20z"/><path d="M10.2 10.5c.3-1.2.9-2 1.8-2.3"/></symbol>
+    <symbol id="i-pupil" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="2" ry="4.6"/><path d="M14.6 8.4h.01"/></symbol>
+    <symbol id="i-tongue" viewBox="0 0 24 24"><path d="M4.5 9.5c2.5 1 5 1.5 7.5 1.5s5-.5 7.5-1.5"/><path d="M8.5 11v4.2a3.5 3.5 0 0 0 7 0V11"/><path d="M12 12.5v3"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.8 12.4V5.2a1.4 1.4 0 0 1 1.4-1.4h7.2l8 8-8.6 8.6z"/><circle cx="8.3" cy="8.3" r="1.2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 6 13.5h5L10 21l8-11h-5z"/></symbol>
+  </defs>
+</svg>
+<script src="demo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

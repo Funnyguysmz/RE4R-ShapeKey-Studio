@@ -52,6 +52,22 @@ local function desktop_command(line)
         return
     end
     if t ~= desktop_identity() or not desktop_binding_valid() then desktop_error='模型已变化，请等待重新绑定'; return end
+    if op=='cap_smooth' then
+        local api=rawget(_G,'RE4R_ShapeKeySystem_api')
+        local n=tonumber(value)
+        if not finite(n) then desktop_error='实时度必须为有限数值';return end
+        if not api or type(api.set_cap_smooth)~='function' then
+            desktop_error='面板版本过旧：缺少实时度接口';return
+        end
+        local ok,err=api.set_cap_smooth(clamp(n,0.05,1))
+        if ok==false then desktop_error=tostring(err or '实时度设置失败') end
+        return
+    end
+    if op=='alloc' then   -- Claude 2026-10-12: panel 0.4.3 API, sizes body / hair weight arrays (works without owning)
+        local api=rawget(_G,'RE4R_ShapeKeySystem_api')
+        if api then api.allocate_weights(tonumber(arg)) else desktop_error='面板版本过旧：需要 0.4.3 或更新' end
+        return
+    end
     if op=='start' then
         if not desktop_owned then desktop_before={token=desktop_identity(),enabled=S.enabled,source=S.source,values=copy(S.values),strength=S.strength,region=copy(S.region)} end
         desktop_owned=true; S.enabled=true; compare_neutral=false; sweep=nil
@@ -98,6 +114,17 @@ re.on_frame(function()
             rows[#rows+1]=table.concat({'R',r.available and '1' or '0',r.running and '1' or '0',r.port or 9000,
                 desktop_clean(r.bind_ip or '0.0.0.0'),r.packets or 0,r.sequence or 0,r.age_ms or 2147483647,
                 r.rejected or 0,r.error or 0,desktop_clean(r.status)},'\t')
+        end
+        local skapi=rawget(_G,'RE4R_ShapeKeySystem_api')   -- M rows (Claude 2026-10-12): per-mesh weight-array state
+        if skapi and type(skapi.get_cap_smooth)=='function' then
+            local n=skapi.get_cap_smooth()
+            if finite(n) then rows[#rows+1]='C\t'..string.format('%.4f',clamp(n,0.05,1)) end
+        end
+        if skapi then
+            for _,m in ipairs(skapi.mesh_status()) do
+                rows[#rows+1]=table.concat({'M',m.index,desktop_clean(m.name),m.channels,tostring(m.weight_count or 0),
+                    tostring(m.weight_list or 0),m.limit or 0,m.ready and '1' or '0'},'\t')
+            end
         end
         for _,k in ipairs(keys) do
             local e=desktop_mesh(k)
