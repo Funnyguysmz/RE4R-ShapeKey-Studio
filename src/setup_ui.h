@@ -29,15 +29,19 @@ static void local_addresses(void){
         }
     }free(a);
 }
-static void save_directory(void){
-    if(demo || smoke || setup_test || render_path[0])return;
-    if(!WritePrivateProfileStringW(L"Studio",L"GameDirectory",game_directory,config_file))wcscpy(setup_message,tr(L"无法保存目录设置，请把工作台解压到可写文件夹。",L"Cannot save settings. Extract Studio into a writable folder."));
+static int save_directory(void){
+    if(demo || smoke || setup_test || render_path[0])return 1;
+    if(GetFileAttributesW(config_file)==INVALID_FILE_ATTRIBUTES){
+        HANDLE f=CreateFileW(config_file,GENERIC_WRITE,FILE_SHARE_READ,NULL,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,NULL);
+        if(f!=INVALID_HANDLE_VALUE){WCHAR bom=0xfeff;DWORD n;WriteFile(f,&bom,sizeof(bom),&n,NULL);CloseHandle(f);}
+    }
+    return WritePrivateProfileStringW(L"Studio",L"GameDirectory",game_directory,config_file)!=0;
 }
 static void validate_directory(void){
     GetWindowTextW(directory_edit,game_directory,1024);size_t n=wcslen(game_directory);
     while(n>3 && (game_directory[n-1]==L'\\' || game_directory[n-1]==L'/'))game_directory[--n]=0;
     directory_valid=valid_game_directory(game_directory);
-    if(directory_valid){save_directory();wcscpy(setup_message,tr(L"已找到 re4.exe，可以进入工作台。",L"re4.exe found. You can enter the workbench."));}
+    if(directory_valid){int saved=save_directory();wcscpy(setup_message,saved?tr(L"已找到 re4.exe，可以进入工作台。",L"re4.exe found. You can enter the workbench."):tr(L"目录有效，但设置无法保存；请把程序解压到可写文件夹。",L"Directory valid, but settings cannot be saved. Use a writable folder."));}
     else wcscpy(setup_message,tr(L"请选择直接包含 re4.exe 的游戏文件夹。",L"Choose the game folder containing re4.exe."));
     InvalidateRect(win,NULL,FALSE);
 }

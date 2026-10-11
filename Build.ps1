@@ -30,6 +30,7 @@ Copy-Item -LiteralPath "$root\Install.ps1" -Destination $package -Force
 Copy-Item -LiteralPath "$root\README.md" -Destination $package -Force
 foreach($license in @('REFramework_LICENSE','RhyLive_LICENSE')){Copy-Item -LiteralPath "$root\vendor\$license" -Destination $package -Force}
 $luaHeader=[IO.File]::ReadAllText("$lua\lua.h")
-$license=[regex]::Match($luaHeader,'(?s)Copyright \(C\) [^\r\n]+Lua.org, PUC-Rio\.\r?\n\r?\nPermission.*?SOFTWARE\.').Value
+$license=[regex]::Match($luaHeader,'(?s)Copyright \(C\) [^\r\n]+Lua.org, PUC-Rio\..*?SOFTWARE\.').Value
+if($license.Length -lt 500){throw 'Lua copyright notice not found; do not distribute the package.'}
 [IO.File]::WriteAllText("$package\Lua_LICENSE.txt",$license,[Text.UTF8Encoding]::new($false))
 Write-Output "BUILD_PASS $package"
