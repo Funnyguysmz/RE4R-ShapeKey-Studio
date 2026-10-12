@@ -11,20 +11,22 @@ try {
         if($name -match '(?i)(^|/)(backups|cache|logs|natives|models?)(/|$)|\.(ini|log|pdb|lib|blend|fbx|pmx|mesh|tex)(\.|$)|font|Shinano_preview|running_old'){
             throw "Excluded personal, model, game or build artifact: $name"
         }
-        $allowed='^(RE4R_ShapeKeyStudio\.exe|WebView2Loader\.dll|Install\.ps1|VERSION\.txt|LICENSE|ThirdPartyNotices\.md|README\.md|Lua_LICENSE\.txt|REFramework_LICENSE|RhyLive_LICENSE|runtime_adapter\.lua|receiver_adapter\.lua|Studio\.ico|ui/(index\.html|app\.(js|css)|demo\.js|Studio_icon\.png)|third_party/webview2/(LICENSE\.txt|NOTICE\.txt|Microsoft\.Web\.WebView2\.nuspec)|reframework/plugins/(ShapeKeyBridge|RhyLiveFace)\.dll|reframework/autorun/(RE4R_ShapeKeySystem|RhyLiveFace)\.lua|reframework/autorun/RhyLiveFace/(default_profile|face_math|localization)\.lua)$'
+        $allowed='^(RE4R_ShapeKeyStudio\.exe|WebView2Loader\.dll|Install\.ps1|VERSION\.txt|LICENSE|ThirdPartyNotices\.md|README\.md|Lua_LICENSE\.txt|REFramework_LICENSE|RhyLive_LICENSE|runtime_adapter\.lua|receiver_adapter\.lua|Studio\.ico|ui/(index\.html|app\.(js|css)|demo\.js|Studio_icon\.png)|third_party/webview2/(LICENSE\.txt|NOTICE\.txt|Microsoft\.Web\.WebView2\.nuspec)|reframework/data/RE4R_ShapeKeySystem_native_leon\.json|reframework/plugins/(ShapeKeyBridge|RhyLiveFace)\.dll|reframework/autorun/(RE4R_ShapeKeySystem|RhyLiveFace)\.lua|reframework/autorun/RhyLiveFace/(default_profile|face_math|localization)\.lua)$'
         if($name -notmatch $allowed){throw "Entry outside release allowlist: $name"}
         $entries[$name]=$entry
     }
-    foreach($required in @('RE4R_ShapeKeyStudio.exe','WebView2Loader.dll','Install.ps1','VERSION.txt','LICENSE','ThirdPartyNotices.md','third_party/webview2/LICENSE.txt','third_party/webview2/NOTICE.txt','Lua_LICENSE.txt','REFramework_LICENSE','RhyLive_LICENSE','ui/index.html','ui/app.js','ui/app.css','ui/demo.js','reframework/plugins/ShapeKeyBridge.dll','reframework/plugins/RhyLiveFace.dll')){
+    foreach($required in @('RE4R_ShapeKeyStudio.exe','WebView2Loader.dll','Install.ps1','VERSION.txt','LICENSE','ThirdPartyNotices.md','third_party/webview2/LICENSE.txt','third_party/webview2/NOTICE.txt','Lua_LICENSE.txt','REFramework_LICENSE','RhyLive_LICENSE','ui/index.html','ui/app.js','ui/app.css','ui/demo.js','reframework/data/RE4R_ShapeKeySystem_native_leon.json','reframework/plugins/ShapeKeyBridge.dll','reframework/plugins/RhyLiveFace.dll')){
         if(!$entries.ContainsKey($required)){throw "Missing release file: $required"}
     }
     function Read-ZipText([string]$Name){
         $reader=[IO.StreamReader]::new($entries[$Name].Open(),[Text.Encoding]::UTF8)
         try{return $reader.ReadToEnd()}finally{$reader.Dispose()}
     }
-    if((Read-ZipText 'VERSION.txt').Trim() -ne '0.4.0'){throw 'Wrong release version'}
+    if((Read-ZipText 'VERSION.txt').Trim() -ne '0.4.1'){throw 'Wrong release version'}
+    $native=(Read-ZipText 'reframework/data/RE4R_ShapeKeySystem_native_leon.json') | ConvertFrom-Json
+    if($native.format -ne 1 -or !$native.joints){throw 'Invalid native conversion table'}
     $ui=Read-ZipText 'ui/app.js'
-    if(!$ui.Contains("version: '0.4.0'") -or !$ui.Contains('cap_smooth') -or !$ui.Contains('topmost')){throw 'UI does not include required 0.4 features'}
+    if(!$ui.Contains("version: '0.4.1'") -or !$ui.Contains('cap_smooth') -or !$ui.Contains('topmost')){throw 'UI does not include required 0.4 features'}
     $runtime=Read-ZipText 'reframework/autorun/RE4R_ShapeKeySystem.lua'
     foreach($api in @('get_cap_smooth','set_cap_smooth','mesh_status','allocate_weights')){
         if(!$runtime.Contains($api)){throw "Missing runtime API: $api"}

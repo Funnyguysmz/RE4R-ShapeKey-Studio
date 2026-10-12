@@ -1,4 +1,4 @@
-param([string]$Zig='zig',[Parameter(Mandatory=$true)][string]$LuaSourceDirectory)
+﻿param([string]$Zig='zig',[Parameter(Mandatory=$true)][string]$LuaSourceDirectory)
 $ErrorActionPreference='Stop'
 $root=$PSScriptRoot
 $apiHeader=Join-Path $root 'vendor\REFramework\API.h'
@@ -28,6 +28,8 @@ foreach($spec in @(@('RE4R_ShapeKeySystem.lua','runtime_adapter.lua'),@('RhyLive
 }
 foreach($module in @('face_math.lua','default_profile.lua','localization.lua')){Copy-Item -LiteralPath "$root\runtime\RhyLiveFace\$module" -Destination "$package\reframework\autorun\RhyLiveFace\$module" -Force}
 foreach($asset in @('Studio_icon.png','Studio.ico','demo_profile.tsv')){Copy-Item -LiteralPath "$root\assets\$asset" -Destination $package -Force}
+New-Item -ItemType Directory -Path "$package\reframework\data" -Force | Out-Null
+Copy-Item -LiteralPath "$root\runtime\data\RE4R_ShapeKeySystem_native_leon.json" -Destination "$package\reframework\data" -Force
 Copy-Item -LiteralPath "$root\Install.ps1" -Destination $package -Force
 Copy-Item -LiteralPath "$root\README.md" -Destination $package -Force
 foreach($license in @('REFramework_LICENSE','RhyLive_LICENSE')){Copy-Item -LiteralPath "$root\vendor\$license" -Destination $package -Force}

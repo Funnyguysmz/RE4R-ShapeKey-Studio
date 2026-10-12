@@ -25,7 +25,7 @@
 #include <string.h>
 #include "WebView2.h"
 
-#define STUDIO_VERSION L"0.4.0"
+#define STUDIO_VERSION L"0.4.1"
 #define PIPE_NAME L"\\\\.\\pipe\\RE4R.ShapeKey.Desktop.v1"
 #define CAP 262144
 

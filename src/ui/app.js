@@ -153,7 +153,7 @@ const S = {
   view: 'setup', page: store.get('page', 'face'), search: '', online: false, token: '', owned: false, source: 1, strength: 1,
   status: '', profile: '', capture: '', error: '', compare: false, sweep: false,
   recv: {available: false, running: false, port: 9000, ip: '0.0.0.0', packets: 0, frames: 0, age: 0, rejected: 0, error: 0, status: ''},
-  capSmooth: null, capHold: 0, keys: [], byId: new Map(), meshes: [], sel: store.get('sel', ''), host: {version: '0.4.0', dir: '', valid: false, msg: 'dir_none', installing: false, lan: '', demo: DEMO},
+  capSmooth: null, capHold: 0, keys: [], byId: new Map(), meshes: [], sel: store.get('sel', ''), host: {version: '0.4.1', dir: '', valid: false, msg: 'dir_none', installing: false, lan: '', demo: DEMO},
 };
 const rows = new Map();           // id -> row widget on the current page
 let keySig = '', pagesSig = rebuildPages();
@@ -748,7 +748,7 @@ const DEMO_FAKE_KEYS = [
 function demoInit() {
   const keys = (window.DEMO_KEYS || []).concat(Q.get('fake') === '0' ? [] : DEMO_FAKE_KEYS).map(k => ({...k, manual: k.manual || 0, actual: k.manual || 0}));
   demoState = {owned: Q.get('owned') === '1', source: 1, strength: 1, compare: 0, sweep: 0, keys, cap: 0.5, recv: {running: true, stream: Q.get('stream') !== '0', pacc: 0, facc: 0, packets: 1840, frames: 1792, lastT: 0}, alloc: {2: Q.get('alloc') !== '0', 3: Q.get('alloc') !== '0'}};
-  S.host = {version: '0.4.0', dir: 'D:\\steam\\steamapps\\common\\RESIDENT EVIL 4  BIOHAZARD RE4', valid: true, msg: 'dir_ok', installing: false, lan: '192.168.1.23', demo: true};
+  S.host = {version: '0.4.1', dir: 'D:\\steam\\steamapps\\common\\RESIDENT EVIL 4  BIOHAZARD RE4', valid: true, msg: 'dir_ok', installing: false, lan: '192.168.1.23', demo: true};
   const r = demoState.recv, now = performance.now();
   if (r.stream) r.lastT = now;
   else { r.lastT = now - 12000; r.stopT = r.lastT; }     // ?stream=0: the phone stopped 12 s ago

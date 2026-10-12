@@ -1,3 +1,7 @@
+Maintenance release: **0.4.1** — bundles and installs the native animation conversion table; existing user tables are preserved.
+
+维护版本：**0.4.1** — 补齐原生动画换算表的打包和安装，保留已有用户配置。
+
 # RE4R ShapeKey Studio
 
 >
@@ -201,3 +205,7 @@ License: MIT。见 [LICENSE](LICENSE)；第三方组件保留各自原许可证�
 - Studio 0.4 还会再分发微软的 `WebView2Loader.dll`（Microsoft Edge WebView2 SDK）。
 
 目录：`src/` 桌面与桥接代码，`runtime/` 游戏内 Lua 与面捕模块，`tests/` 桩测试，`assets/` 图标与离线通道数据。
+
+Native animation conversion: the package includes `reframework/data/RE4R_ShapeKeySystem_native_leon.json`. Clean installations install it; an existing file is preserved with a message. `json.load_file` in REFramework reads this filename under `reframework/data`.
+
+原生动画换算：包内包含 `reframework/data/RE4R_ShapeKeySystem_native_leon.json`；干净安装会写入，已有文件会提示并保留。REFramework 的 `json.load_file` 从 `reframework/data` 读取此文件名。

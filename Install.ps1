@@ -1,10 +1,21 @@
-param([Parameter(Mandatory=$true)][string]$GameDirectory)
+﻿param([Parameter(Mandatory=$true)][string]$GameDirectory)
 $ErrorActionPreference = 'Stop'
 $gameRoot = [IO.Path]::GetFullPath($GameDirectory).TrimEnd('\')
 if (!(Test-Path -LiteralPath (Join-Path $gameRoot 're4.exe') -PathType Leaf)) { throw 'GameDirectory must contain re4.exe.' }
 if (Get-Process -Name re4 -ErrorAction SilentlyContinue) { throw 'Close RE4 before installing the bridge.' }
 $packageRoot = $PSScriptRoot
 $planned = @()
+$nativeRelative='reframework\data\RE4R_ShapeKeySystem_native_leon.json'
+$nativeTarget=Join-Path $gameRoot $nativeRelative
+if(!(Test-Path -LiteralPath $nativeTarget)){
+    $nativeSource=Join-Path $packageRoot $nativeRelative
+    $nativeText=[IO.File]::ReadAllText($nativeSource,[Text.Encoding]::UTF8)
+    $nativeConfig=$nativeText | ConvertFrom-Json
+    if($nativeConfig.format -ne 1 -or !$nativeConfig.joints){throw 'Invalid bundled native conversion table. No files changed.'}
+    $planned+=@{relative=$nativeRelative;bytes=[IO.File]::ReadAllBytes($nativeSource)}
+} else {
+    Write-Output "Preserving existing native conversion table: $nativeTarget"
+}
 foreach ($scriptSpec in @(
     @{name='RE4R_ShapeKeySystem.lua';adapter='runtime_adapter.lua';marker='RE4R_DESKTOP_BRIDGE';required=@('key_by_id','local function still_valid','local function zero_written','local function save_settings')},
     @{name='RhyLiveFace.lua';adapter='receiver_adapter.lua';marker='RE4R_RHYLIVE_DESKTOP';required=@('local native=','local settings=','local function safe_poll_receiver','local function mark_dirty','local function flush_settings')}

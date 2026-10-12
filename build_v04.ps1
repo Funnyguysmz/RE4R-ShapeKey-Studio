@@ -40,7 +40,7 @@ $json=@($demo) | ConvertTo-Json -Compress
 foreach($name in @('Install.ps1','runtime_adapter.lua','receiver_adapter.lua','Studio.ico','Lua_LICENSE.txt','REFramework_LICENSE','RhyLive_LICENSE','README.md')){
     Copy-Item -LiteralPath "$root\build\package\$name" -Destination $out -Recurse -Force
 }
-Get-ChildItem -LiteralPath "$root\build\package\reframework" -File -Recurse | Where-Object Extension -In @('.dll','.lua') | ForEach-Object {
+Get-ChildItem -LiteralPath "$root\build\package\reframework" -File -Recurse | Where-Object Extension -In @('.dll','.lua','.json') | ForEach-Object {
     $relative=$_.FullName.Substring(("$root\build\package").Length+1)
     $target=Join-Path $out $relative
     New-Item -ItemType Directory -Path (Split-Path $target -Parent) -Force | Out-Null
@@ -58,5 +58,5 @@ foreach($name in @('LICENSE.txt','NOTICE.txt','Microsoft.Web.WebView2.nuspec')){
 }
 Copy-Item -LiteralPath "$root\ThirdPartyNotices.md" -Destination $out -Force
 Copy-Item -LiteralPath "$root\LICENSE" -Destination $out -Force
-[IO.File]::WriteAllText("$out\VERSION.txt","0.4.0`n",[Text.UTF8Encoding]::new($false))
+[IO.File]::WriteAllText("$out\VERSION.txt","0.4.1`n",[Text.UTF8Encoding]::new($false))
 Write-Output "BUILD_V04_PASS $out"

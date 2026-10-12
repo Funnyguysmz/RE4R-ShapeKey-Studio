@@ -15,7 +15,7 @@ if($UiVersion -eq '0.4'){
     foreach($name in @('RE4R_ShapeKeyStudio.exe','WebView2Loader.dll','ui\app.js','ui\demo.js','VERSION.txt','ThirdPartyNotices.md','third_party\webview2\LICENSE.txt')){
         if(!(Test-Path -LiteralPath (Join-Path $package $name))){throw "Missing 0.4 build file: $name"}
     }
-    if([IO.File]::ReadAllText("$package\VERSION.txt").Trim() -ne '0.4.0'){throw 'Unexpected Studio version'}
+    if([IO.File]::ReadAllText("$package\VERSION.txt").Trim() -ne '0.4.1'){throw 'Unexpected Studio version'}
     foreach($arguments in @('--selftest --demo','--selftest')){
         $child=Start-Process -FilePath "$package\RE4R_ShapeKeyStudio.exe" -ArgumentList $arguments -WindowStyle Hidden -PassThru
         if(!$child.WaitForExit(30000)){$child.Kill();throw 'WebView2 selftest timed out'}

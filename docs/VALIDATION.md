@@ -1,4 +1,4 @@
-# Validation / 验证状态 — 0.4.0
+# Validation / 验证状态 — 0.4.1
 
 ## English
 
@@ -25,3 +25,7 @@ No game files are installed or changed by the tests.
 - 已确认：桌面与游戏联动、滑条与回读、按分区自动生成 tab、身体 / 头发权重数组自动分配（无需进调试页）、真实手机推流下的面捕速率 / 状态显示与实时度调节、窗口置顶。
 
 测试不会安装或修改游戏文件。
+
+Native conversion table maintenance: isolated clean-install hash check, existing configuration preservation, and rollback after an injected write failure are covered by `tests/install_test.ps1`. This maintenance does not install into the real game.
+
+原生换算表维护：隔离测试覆盖干净安装文件哈希、已有配置保留、注入写入失败后的回滚；本轮不安装到真实游戏。
