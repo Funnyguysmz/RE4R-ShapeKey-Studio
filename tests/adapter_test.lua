@@ -48,6 +48,14 @@ smooth_cmd('0.8');for i=1,6 do run() end
 assert(calls==before and not published:find('\nC\t',1,true))
 RE4R_ShapeKeySystem_api=nil
 print('ADAPTER_CAP_SMOOTH_COMMAND_SNAPSHOT_RANGE_FINITE_LEGACY_PASS')
+_G.read_weight=function()return nil,'out_of_bounds' end
+assert(not desktop_writable(keys[1]))
+_G.read_weight=function()return 0,'ok' end
+assert(desktop_writable(keys[1]))
+_G.native_key=function()return true end
+assert(not desktop_writable(keys[1]))
+_G.read_weight=nil;_G.native_key=nil
+print('ADAPTER_SYSTEM_BOUNDS_AND_NATIVE_READ_ONLY_PASS')
 desktop_ticks=0
 run('C\t'..t..'\tstart\t\t\nC\t'..t..'\tset\tjaw\t0.75\n')
 assert(S.enabled and S.values.jaw==0.75 and desktop_owned)

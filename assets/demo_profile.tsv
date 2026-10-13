@@ -1,77 +1,77 @@
-K	SK__sn.eye_close_L	闭眼 左	eye	0	0	1	1	目
-K	SK__sn.eye_joy_L	笑眼 左	eye	0	0	1	1	目
-K	SK__sn.eye_close_R	闭眼 右	eye	0	0	1	1	目
-K	SK__sn.eye_joy_R	笑眼 右	eye	0	0	1	1	目
-K	SK__sn.eye_nagomi1	眯眼	eye	0	0	1	1	目
-K	SK__sn.eye_zitome1	半眯眼	eye	0	0	1	1	目
-K	SK__sn.eye_halfclose	半闭眼	eye	0	0	1	1	目
-K	SK__sn.eye_sleepy	困倦眼	eye	0	0	1	1	目
-K	SK__sn.eye_surprise	惊讶睁眼	eye	0	0	1	1	目
-K	SK__sn.eye_sad	伤心眼	eye	0	0	1	1	目
-K	SK__sn.eye_angry	生气眼	eye	0	0	1	1	目
-K	SK__sn.pupil_big	瞳孔放大	eye	0	0	1	1	目
-K	SK__sn.pupil_small	瞳孔缩小	eye	0	0	1	1	目
-K	SK__sn.eye_xx	><眼	effect	0	0	1	1	特效
-K	SK__sn.eye_heart	爱心眼	effect	0	0	1	1	特效
-K	SK__sn.eye_kirakira	闪闪眼	effect	0	0	1	1	特效
-K	SK__sn.eye_guruguru	转圈眼	effect	0	0	1	1	特效
-K	SK__sn.eye_whiteeye	白眼	effect	0	0	1	1	特效
-K	SK__sn.eye_look_left	看向左	gaze	0	0	1	1	视线
-K	SK__sn.eye_look_right	看向右	gaze	0	0	1	1	视线
-K	SK__sn.eye_look_up	看向上	gaze	0	0	1	1	视线
-K	SK__sn.eye_look_down	看向下	gaze	0	0	1	1	视线
-K	SK__sn.mouth_a1	口型 あ	mouth	0	0	1	1	口
-K	SK__sn.mouth_i1	口型 い	mouth	0	0	1	1	口
-K	SK__sn.mouth_u1	口型 う	mouth	0	0	1	1	口
-K	SK__sn.mouth_e1	口型 え	mouth	0	0	1	1	口
-K	SK__sn.mouth_o1	口型 お	mouth	0	0	1	1	口
-K	SK__sn.mouth_narrow	嘴收窄	mouth	0	0	1	1	口
-K	SK__sn.mouth_hawa	はわ嘴	mouth	0	0	1	1	口
-K	SK__sn.mouth_wa	口型 ワ	mouth	0	0	1	1	口
-K	SK__sn.tongue_pero	吐舌	mouth	0	0	1	1	口
-K	SK__sn.mouth_omega	ω嘴	mouth	0	0	1	1	口
-K	SK__sn.mouth_tri	三角嘴	mouth	0	0	1	1	口
-K	SK__sn.mouth_square	方嘴	mouth	0	0	1	1	口
-K	SK__sn.mouth_lambda	Λ嘴	mouth	0	0	1	1	口
-K	SK__sn.mouth_smile_L	嘴角上扬 左	mouth	0	0	1	1	口
-K	SK__sn.mouth_sad_L	嘴角下垂 左	mouth	0	0	1	1	口
-K	SK__sn.mouth_wide_L	嘴横拉 左	mouth	0	0	1	1	口
-K	SK__sn.mouth_grin1_L	咧嘴笑 左	mouth	0	0	1	1	口
-K	SK__sn.pout_L	鼓腮 左	mouth	0	0	1	1	口
-K	SK__sn.eyebrow_sad1_L	困扰眉 左	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_angry1_L	生气眉 左	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_up_L	眉上 左	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_down_L	眉下 左	brow	0	0	1	1	眉
-K	SK__sn.mouth_smile_R	嘴角上扬 右	mouth	0	0	1	1	口
-K	SK__sn.mouth_sad_R	嘴角下垂 右	mouth	0	0	1	1	口
-K	SK__sn.mouth_wide_R	嘴横拉 右	mouth	0	0	1	1	口
-K	SK__sn.mouth_grin1_R	咧嘴笑 右	mouth	0	0	1	1	口
-K	SK__sn.pout_R	鼓腮 右	mouth	0	0	1	1	口
-K	SK__sn.eyebrow_sad1_R	困扰眉 右	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_angry1_R	生气眉 右	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_up_R	眉上 右	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_down_R	眉下 右	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_joy	开心眉	brow	0	0	1	1	眉
-K	SK__sn.eyebrow_surprised	惊讶眉	brow	0	0	1	1	眉
-K	SK__sn.cheek_1	脸红	effect	0	0	1	1	特效
-K	SK__sn.cheek_2	脸红 2	effect	0	0	1	1	特效
-K	SK__sn.tear_1	流泪	effect	0	0	1	1	特效
-K	SK__sn.sweat_1	流汗	effect	0	0	1	1	特效
-K	SK__sn.shadow	阴影（がーん）	effect	0	0	1	1	特效
-K	SK__sn.option_face_loli	童颜	shape	0	0	1	1	捏脸
-K	SK__sn.option_face_otona	成熟脸	shape	0	0	1	1	捏脸
-K	SK__sn.option_contour_sharp	尖脸	shape	0	0	1	1	捏脸
-K	SK__sn.option_contour_maru	圆脸	shape	0	0	1	1	捏脸
-K	SK__sn.eye_size_big	大眼	shape	0	0	1	1	捏脸
-K	SK__sn.eye_size_small	小眼	shape	0	0	1	1	捏脸
-K	SK__sn.option_jaw_long	下巴长	shape	0	0	1	1	捏脸
-K	SK__sn.option_jaw_short	下巴短	shape	0	0	1	1	捏脸
-K	SK__sn.breast_big	胸部放大	body	0.35	0.35	1	2	身体
-K	SK__sn.breast_flat	胸部缩小（平）	body	0	0	1	2	身体
-K	SK__sn.hip_big	臀部放大	body	0.2	0.2	1	2	身体
-K	SK__sn.length_long	衣裙加长	outfit	0.15	0.15	1	2	服装
-K	SK__sn.length_short	衣裙缩短	outfit	0	0	1	2	服装
-K	SK__sn.bangs_long	刘海加长	hair	0	0	1	3	头发
-K	SK__sn.bangs_short	刘海缩短	hair	0	0	1	3	头发
-K	SK__sn.ear_long	兽耳加长	hair	0	0	1	3	兽耳
-K	SK__sn.ear_droop	兽耳垂下	hair	0	0	1	3	兽耳
+K	DEMO_key_001	Demo key 1	eye	0	0	1	1	eye
+K	DEMO_key_002	Demo key 2	eye	0	0	1	1	eye
+K	DEMO_key_003	Demo key 3	eye	0	0	1	1	eye
+K	DEMO_key_004	Demo key 4	eye	0	0	1	1	eye
+K	DEMO_key_005	Demo key 5	eye	0	0	1	1	eye
+K	DEMO_key_006	Demo key 6	eye	0	0	1	1	eye
+K	DEMO_key_007	Demo key 7	eye	0	0	1	1	eye
+K	DEMO_key_008	Demo key 8	eye	0	0	1	1	eye
+K	DEMO_key_009	Demo key 9	eye	0	0	1	1	eye
+K	DEMO_key_010	Demo key 10	eye	0	0	1	1	eye
+K	DEMO_key_011	Demo key 11	eye	0	0	1	1	eye
+K	DEMO_key_012	Demo key 12	eye	0	0	1	1	eye
+K	DEMO_key_013	Demo key 13	eye	0	0	1	1	eye
+K	DEMO_key_014	Demo key 14	effect	0	0	1	1	effect
+K	DEMO_key_015	Demo key 15	effect	0	0	1	1	effect
+K	DEMO_key_016	Demo key 16	effect	0	0	1	1	effect
+K	DEMO_key_017	Demo key 17	effect	0	0	1	1	effect
+K	DEMO_key_018	Demo key 18	effect	0	0	1	1	effect
+K	DEMO_key_019	Demo key 19	gaze	0	0	1	1	gaze
+K	DEMO_key_020	Demo key 20	gaze	0	0	1	1	gaze
+K	DEMO_key_021	Demo key 21	gaze	0	0	1	1	gaze
+K	DEMO_key_022	Demo key 22	gaze	0	0	1	1	gaze
+K	DEMO_key_023	Demo key 23	mouth	0	0	1	1	mouth
+K	DEMO_key_024	Demo key 24	mouth	0	0	1	1	mouth
+K	DEMO_key_025	Demo key 25	mouth	0	0	1	1	mouth
+K	DEMO_key_026	Demo key 26	mouth	0	0	1	1	mouth
+K	DEMO_key_027	Demo key 27	mouth	0	0	1	1	mouth
+K	DEMO_key_028	Demo key 28	mouth	0	0	1	1	mouth
+K	DEMO_key_029	Demo key 29	mouth	0	0	1	1	mouth
+K	DEMO_key_030	Demo key 30	mouth	0	0	1	1	mouth
+K	DEMO_key_031	Demo key 31	mouth	0	0	1	1	mouth
+K	DEMO_key_032	Demo key 32	mouth	0	0	1	1	mouth
+K	DEMO_key_033	Demo key 33	mouth	0	0	1	1	mouth
+K	DEMO_key_034	Demo key 34	mouth	0	0	1	1	mouth
+K	DEMO_key_035	Demo key 35	mouth	0	0	1	1	mouth
+K	DEMO_key_036	Demo key 36	mouth	0	0	1	1	mouth
+K	DEMO_key_037	Demo key 37	mouth	0	0	1	1	mouth
+K	DEMO_key_038	Demo key 38	mouth	0	0	1	1	mouth
+K	DEMO_key_039	Demo key 39	mouth	0	0	1	1	mouth
+K	DEMO_key_040	Demo key 40	mouth	0	0	1	1	mouth
+K	DEMO_key_041	Demo key 41	brow	0	0	1	1	brow
+K	DEMO_key_042	Demo key 42	brow	0	0	1	1	brow
+K	DEMO_key_043	Demo key 43	brow	0	0	1	1	brow
+K	DEMO_key_044	Demo key 44	brow	0	0	1	1	brow
+K	DEMO_key_045	Demo key 45	mouth	0	0	1	1	mouth
+K	DEMO_key_046	Demo key 46	mouth	0	0	1	1	mouth
+K	DEMO_key_047	Demo key 47	mouth	0	0	1	1	mouth
+K	DEMO_key_048	Demo key 48	mouth	0	0	1	1	mouth
+K	DEMO_key_049	Demo key 49	mouth	0	0	1	1	mouth
+K	DEMO_key_050	Demo key 50	brow	0	0	1	1	brow
+K	DEMO_key_051	Demo key 51	brow	0	0	1	1	brow
+K	DEMO_key_052	Demo key 52	brow	0	0	1	1	brow
+K	DEMO_key_053	Demo key 53	brow	0	0	1	1	brow
+K	DEMO_key_054	Demo key 54	brow	0	0	1	1	brow
+K	DEMO_key_055	Demo key 55	brow	0	0	1	1	brow
+K	DEMO_key_056	Demo key 56	effect	0	0	1	1	effect
+K	DEMO_key_057	Demo key 57	effect	0	0	1	1	effect
+K	DEMO_key_058	Demo key 58	effect	0	0	1	1	effect
+K	DEMO_key_059	Demo key 59	effect	0	0	1	1	effect
+K	DEMO_key_060	Demo key 60	effect	0	0	1	1	effect
+K	DEMO_key_061	Demo key 61	shape	0	0	1	1	shape
+K	DEMO_key_062	Demo key 62	shape	0	0	1	1	shape
+K	DEMO_key_063	Demo key 63	shape	0	0	1	1	shape
+K	DEMO_key_064	Demo key 64	shape	0	0	1	1	shape
+K	DEMO_key_065	Demo key 65	shape	0	0	1	1	shape
+K	DEMO_key_066	Demo key 66	shape	0	0	1	1	shape
+K	DEMO_key_067	Demo key 67	shape	0	0	1	1	shape
+K	DEMO_key_068	Demo key 68	shape	0	0	1	1	shape
+K	DEMO_key_069	Demo key 69	body	0.35	0.35	1	2	body
+K	DEMO_key_070	Demo key 70	body	0	0	1	2	body
+K	DEMO_key_071	Demo key 71	body	0.2	0.2	1	2	body
+K	DEMO_key_072	Demo key 72	outfit	0.15	0.15	1	2	outfit
+K	DEMO_key_073	Demo key 73	outfit	0	0	1	2	outfit
+K	DEMO_key_074	Demo ears 1	hair	0	0	1	3	hair
+K	DEMO_key_075	Demo ears 2	hair	0	0	1	3	hair
+K	DEMO_key_076	Demo hair 3	hair	0	0	1	3	hair
+K	DEMO_key_077	Demo hair 4	hair	0	0	1	3	hair

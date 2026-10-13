@@ -58,5 +58,12 @@ foreach($name in @('LICENSE.txt','NOTICE.txt','Microsoft.Web.WebView2.nuspec')){
 }
 Copy-Item -LiteralPath "$root\ThirdPartyNotices.md" -Destination $out -Force
 Copy-Item -LiteralPath "$root\LICENSE" -Destination $out -Force
-[IO.File]::WriteAllText("$out\VERSION.txt","0.4.1`n",[Text.UTF8Encoding]::new($false))
+if(Test-Path -LiteralPath "$root\examples\mouth9"){
+    New-Item -ItemType Directory -Path "$out\examples\mouth9" -Force | Out-Null
+    Copy-Item -LiteralPath "$root\examples\mouth9\README.md" -Destination "$out\examples\mouth9" -Force
+    Copy-Item -LiteralPath "$root\examples\mouth9\profile_mouth9_synthetic.json" -Destination "$out\examples\mouth9" -Force
+}
+New-Item -ItemType Directory -Path "$out\docs" -Force | Out-Null
+foreach($doc in @('TOOLCHAIN.md','VALIDATION.md')){Copy-Item -LiteralPath "$root\docs\$doc" -Destination "$out\docs" -Force}
+[IO.File]::WriteAllText("$out\VERSION.txt","0.4.2-beta.1`n",[Text.UTF8Encoding]::new($false))
 Write-Output "BUILD_V04_PASS $out"

@@ -153,7 +153,7 @@ const S = {
   view: 'setup', page: store.get('page', 'face'), search: '', online: false, token: '', owned: false, source: 1, strength: 1,
   status: '', profile: '', capture: '', error: '', compare: false, sweep: false,
   recv: {available: false, running: false, port: 9000, ip: '0.0.0.0', packets: 0, frames: 0, age: 0, rejected: 0, error: 0, status: ''},
-  capSmooth: null, capHold: 0, keys: [], byId: new Map(), meshes: [], sel: store.get('sel', ''), host: {version: '0.4.1', dir: '', valid: false, msg: 'dir_none', installing: false, lan: '', demo: DEMO},
+  capSmooth: null, capHold: 0, keys: [], byId: new Map(), meshes: [], sel: store.get('sel', ''), host: {version: '0.4.2-beta.1', dir: '', valid: false, msg: 'dir_none', installing: false, lan: '', demo: DEMO},
 };
 const rows = new Map();           // id -> row widget on the current page
 let keySig = '', pagesSig = rebuildPages();
@@ -297,9 +297,9 @@ function updateChrome() {
   const sub = cs === 'off' ? t('conn_sub_off') : (S.status || t('conn_sub_on'));
   $('#connSub').textContent = cs === 'on' ? t('conn_sub_on') : sub; $('#connCardSub').textContent = cs === 'on' ? (S.profile || t('conn_sub_on')) : sub;
   if (cs !== lastConn) { if (cs === 'on' && lastConn) { conn.classList.remove('pulse'); void conn.offsetWidth; conn.classList.add('pulse'); } lastConn = cs; }
-  $('#modelName').textContent = S.profile || (cs === 'off' ? '—' : 'Shinano');
+  $('#modelName').textContent = S.profile || (cs === 'off' ? '—' : 'Example model');
   $('#modelCount').textContent = S.keys.length ? `${S.keys.length} ${t('keys')}` : '';
-  $('#portraitName').textContent = S.profile || 'Shinano';
+  $('#portraitName').textContent = S.profile || 'Example model';
   $('#sourceText').textContent = t('src')[S.source - 1] || '—';
   const cb = $('#controlBtn'); const owned = S.owned;
   if (cb.dataset.owned !== String(owned)) {
@@ -748,7 +748,7 @@ const DEMO_FAKE_KEYS = [
 function demoInit() {
   const keys = (window.DEMO_KEYS || []).concat(Q.get('fake') === '0' ? [] : DEMO_FAKE_KEYS).map(k => ({...k, manual: k.manual || 0, actual: k.manual || 0}));
   demoState = {owned: Q.get('owned') === '1', source: 1, strength: 1, compare: 0, sweep: 0, keys, cap: 0.5, recv: {running: true, stream: Q.get('stream') !== '0', pacc: 0, facc: 0, packets: 1840, frames: 1792, lastT: 0}, alloc: {2: Q.get('alloc') !== '0', 3: Q.get('alloc') !== '0'}};
-  S.host = {version: '0.4.1', dir: 'D:\\steam\\steamapps\\common\\RESIDENT EVIL 4  BIOHAZARD RE4', valid: true, msg: 'dir_ok', installing: false, lan: '192.168.1.23', demo: true};
+  S.host = {version: '0.4.2-beta.1', dir: 'C:\\Games\\RE4', valid: true, msg: 'dir_ok', installing: false, lan: '192.168.1.23', demo: true};
   const r = demoState.recv, now = performance.now();
   if (r.stream) r.lastT = now;
   else { r.lastT = now - 12000; r.stopT = r.lastT; }     // ?stream=0: the phone stopped 12 s ago
@@ -761,7 +761,7 @@ function demoTick() {
   if (live) { r.pacc += 0.1 * (58 + Math.sin(now / 900) * 4); r.facc += 0.1 * (29 + Math.sin(now / 700) * 2 - (Math.sin(now / 3100) > .96 ? 9 : 0));
     const p = Math.floor(r.pacc), f = Math.floor(r.facc); r.pacc -= p; r.facc -= f; r.packets += p; r.frames += f; if (f > 0) r.lastT = now; }
   const age = r.lastT ? Math.round(now - r.lastT) : 2147483647;
-  const lines = [['S', 'demo:Shinano', d.owned ? 1 : 0, d.source, d.strength.toFixed(3), '已绑定：Shinano（信浓）', 'Shinano（信浓）', '', '', d.compare, d.sweep].join('\t'),
+  const lines = [['S', 'demo:Example', d.owned ? 1 : 0, d.source, d.strength.toFixed(3), '已绑定：示例模型 / Example model', '示例模型 / Example model', '', '', d.compare, d.sweep].join('\t'),
     ['R', 1, r.running ? 1 : 0, 9000, '0.0.0.0', r.packets, r.frames, age, 0, 0, live ? 'RhyLive 接收中' : 'RhyLive'].join('\t'),
     ['C', d.cap.toFixed(2)].join('\t')];
   const ms = [[1, 'head', 159], [2, 'body', 5], [3, 'hair', 4]];

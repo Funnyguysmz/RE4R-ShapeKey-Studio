@@ -69,7 +69,7 @@ static const wchar_t *group_name(Key *k){
 static void pick(int k){selected=k;if(k>=0 && k<count)strcpy(selected_id,keys[k].id);InvalidateRect(win,NULL,FALSE);}
 static void set_weight(int k,double v){if(k<0 || k>=count || !owned || !ready() || !keys[k].writable)return;char b[32];v=fmax(0,fmin(1,v));snprintf(b,sizeof(b),"%.4f",v);command("set",keys[k].id,b);keys[k].manual=v;InvalidateRect(win,NULL,FALSE);}
 static void draw_portrait(HDC dc,int x,int y,int w,int h){
-    if(portrait && (demo || strstr(profile_name,"Shinano"))){UINT iw=0,ih=0;GdipGetImageWidth(portrait,&iw);GdipGetImageHeight(portrait,&ih);void *g=NULL;GdipCreateFromHDC(dc,&g);GdipSetInterpolationMode(g,7);
+    if(portrait){UINT iw=0,ih=0;GdipGetImageWidth(portrait,&iw);GdipGetImageHeight(portrait,&ih);void *g=NULL;GdipCreateFromHDC(dc,&g);GdipSetInterpolationMode(g,7);
         /* Display the real project render, centered on the face and shoulders. */
         GdipDrawImageRectRectI(g,portrait,px(x),px(y),px(w),px(h),(int)(iw*.255),0,(int)(iw*.49),(int)(ih*.47),2,NULL,NULL,NULL);GdipDeleteGraphics(g);
     }else{round_box(dc,x,y,w,h,10,0xfff2f1ef,0);icon(dc,0,x+w/2-11,y+h/2-28,MUTED);text(dc,tr(L"模型缩略图",L"Model thumbnail"),x,y+h/2+10,w,26,0,MUTED,DT_CENTER|DT_SINGLELINE);}
@@ -182,7 +182,7 @@ static void export_preview(const wchar_t *path){
 }
 static void load_demo(void){
     wchar_t path[MAX_PATH];GetModuleFileNameW(NULL,path,MAX_PATH);wchar_t *p=wcsrchr(path,L'\\');if(p)wcscpy(p+1,L"demo_profile.tsv");FILE *f=_wfopen(path,L"rb");
-    strcpy(latest,"S\tDEMO\t0\t1\t1\t离线演示，不连接游戏\tShinano · 公式服\t演示数值\t\t0\t0\n");
+    strcpy(latest,"S\tDEMO\t0\t1\t1\t离线演示，不连接游戏\tExample model\t演示数值\t\t0\t0\n");
     if(f){size_t len=strlen(latest),n=fread(latest+len,1,CAP-len-1,f);latest[len+n]=0;fclose(f);}else strcat(latest,"K\tjaw\t张嘴\tmouth\t0.0\t0.0\t1\t1\t嘴部\n");
 }
 static LRESULT CALLBACK edit_proc(HWND h,UINT m,WPARAM wp,LPARAM lp,UINT_PTR id,DWORD_PTR data){(void)id;(void)data;if(m==WM_KEYDOWN && wp==VK_RETURN){commit_number();SetFocus(win);return 0;}if(m==WM_KEYDOWN && wp==VK_ESCAPE){edit_key=-1;ShowWindow(numeric,SW_HIDE);SetFocus(win);return 0;}return DefSubclassProc(h,m,wp,lp);}
@@ -193,7 +193,7 @@ static LRESULT CALLBACK window_proc(HWND h,UINT m,WPARAM wp,LPARAM lp){
         int sizes[]={14,18,25,12,15,14};for(int i=0;i<6;i++)fonts[i]=CreateFontW(-px(sizes[i]),0,0,0,(i==1 || i==2)?FW_SEMIBOLD:FW_NORMAL,0,0,0,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,CLEARTYPE_QUALITY,DEFAULT_PITCH,L"Microsoft YaHei UI");white_brush=CreateSolidBrush(RGB(255,255,255));
         search=CreateWindowExW(0,L"EDIT",L"",WS_CHILD|WS_VISIBLE|WS_TABSTOP|ES_AUTOHSCROLL,0,0,1,1,h,(HMENU)12,GetModuleHandleW(NULL),NULL);SendMessageW(search,WM_SETFONT,(WPARAM)fonts[0],TRUE);SendMessageW(search,EM_SETCUEBANNER,0,(LPARAM)L"搜索形态键…");
         numeric=CreateWindowExW(0,L"EDIT",L"",WS_CHILD|ES_CENTER|ES_AUTOHSCROLL,0,0,1,1,h,(HMENU)13,GetModuleHandleW(NULL),NULL);SendMessageW(numeric,WM_SETFONT,(WPARAM)fonts[0],TRUE);SetWindowSubclass(numeric,edit_proc,1,0);
-        wchar_t path[MAX_PATH];GetModuleFileNameW(NULL,path,MAX_PATH);wchar_t *p=wcsrchr(path,L'\\');if(p)wcscpy(p+1,L"Shinano_preview.png");GdipLoadImageFromFile(path,&portrait);
+        wchar_t path[MAX_PATH];GetModuleFileNameW(NULL,path,MAX_PATH);wchar_t *p=wcsrchr(path,L'\\');if(p)wcscpy(p+1,L"Studio_icon.png");GdipLoadImageFromFile(path,&portrait);
         HINSTANCE inst=GetModuleHandleW(NULL);
         directory_edit=CreateWindowExW(0,L"EDIT",game_directory,WS_CHILD|WS_TABSTOP|ES_AUTOHSCROLL,0,0,1,1,h,(HMENU)21,inst,NULL);
         port_edit=CreateWindowExW(0,L"EDIT",L"9000",WS_CHILD|WS_TABSTOP|ES_AUTOHSCROLL|ES_NUMBER,0,0,1,1,h,(HMENU)22,inst,NULL);
@@ -249,7 +249,7 @@ static LRESULT CALLBACK window_proc(HWND h,UINT m,WPARAM wp,LPARAM lp){
                 Hit entry={rect(250,300,73,35),KEY_VALUE,selected,1};action(&entry);SetWindowTextW(numeric,L"nan");commit_number();if(fabs(keys[selected].manual-.42)>1e-6)smoke_exit=10;
                 action(&entry);SetWindowTextW(numeric,L"0.33");commit_number();if(fabs(keys[selected].manual-.33)>1e-6)smoke_exit=11;
                 Hit mode={rect(0,0,1,1),MODE_ITEM+3,-1,1};action(&mode);if(source_mode!=3)smoke_exit=12;
-                category=3;filter_keys();if(shown!=4)smoke_exit=7;SetWindowTextW(search,L"兽耳");filter_keys();if(shown!=2)smoke_exit=8;
+                category=3;filter_keys();if(shown!=4)smoke_exit=7;SetWindowTextW(search,L"Demo ears");filter_keys();if(shown!=2)smoke_exit=8;
                 english=1;SetWindowTextW(search,L"");category=2;filter_keys();command("release","","");if(owned)smoke_exit=9;
             }
             if(render_path[0]){if(setup_render){setup_page=1;wcscpy(lan_addresses,L"192.168.1.100（示例）");SetWindowTextW(directory_edit,L"请选择你自己的 RE4 游戏目录");directory_valid=0;export_preview(render_path);}else {category=2;english=0;filter_keys();pick(shown>3?visible[3]:-1);command("start","","");export_preview(render_path);}}

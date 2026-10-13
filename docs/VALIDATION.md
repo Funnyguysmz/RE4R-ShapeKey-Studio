@@ -1,4 +1,4 @@
-# Validation / 验证状态 — 0.4.1
+# Validation / 验证状态 — 0.4.2-beta.1
 
 ## English
 
@@ -29,3 +29,13 @@ No game files are installed or changed by the tests.
 Native conversion table maintenance: isolated clean-install hash check, existing configuration preservation, and rollback after an injected write failure are covered by `tests/install_test.ps1`. This maintenance does not install into the real game.
 
 原生换算表维护：隔离测试覆盖干净安装文件哈希、已有配置保留、注入写入失败后的回滚；本轮不安装到真实游戏。
+
+Historical local candidate, before this public pre-release (2026-10-13): final System 0.4.5-mouth9-test copied from the completed System handoff, with the Studio adapter appended. ZIP-extracted combined script passed legacy60 and mouth9 29 regressions; Studio bridge/UI tests, optional-map/profile preservation, explicit runtime backup and installation rollback passed. Legacy default mapping hash unchanged; old-runtime-plus-new-map negative candidate rejected. No game installation or live mouth9 validation, commit, push or publication was performed.
+
+## Public pre-release 0.4.2-beta.1
+
+Bundled System: 0.4.5-rc.1, source commit 55fe33499a91065a309d1626073e34610826148b. Studio appends its own bridge block. Mapping contracts remain48 rules for legacy Leon and19 for mouth9. Both public mappings are sanitized; existing installed maps are preserved.
+
+The public test entry includes System's synthetic legacy60/mouth9 29 tests against the composed runtime, Studio adapter/receiver/pipe/UI tests, clean installation, profiles/settings/maps preservation, explicit runtime upgrade backups, actual restoration from backup, and failure rollback. Synthetic profiles are never activated by the installer. Final ZIP is read back and checked against source.
+
+Evidence scope: standalone85-channel normal experiment accepted by user; integrated94-channel/nine-input signal binding and eye/mouth behaviour still await separate game feedback. No universal model or expression-normal-mixing acceptance is claimed. Exporter v0.70.6-re4r.1 is separately GPLv3, verified public; Studio remains MIT.

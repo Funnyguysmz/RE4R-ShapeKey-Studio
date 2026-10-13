@@ -30,6 +30,8 @@ foreach($module in @('face_math.lua','default_profile.lua','localization.lua')){
 foreach($asset in @('Studio_icon.png','Studio.ico','demo_profile.tsv')){Copy-Item -LiteralPath "$root\assets\$asset" -Destination $package -Force}
 New-Item -ItemType Directory -Path "$package\reframework\data" -Force | Out-Null
 Copy-Item -LiteralPath "$root\runtime\data\RE4R_ShapeKeySystem_native_leon.json" -Destination "$package\reframework\data" -Force
+$optionalNative=Join-Path $root 'runtime\data\RE4R_ShapeKeySystem_native_leon_mouth9.json'
+if(Test-Path -LiteralPath $optionalNative){Copy-Item -LiteralPath $optionalNative -Destination "$package\reframework\data" -Force}
 Copy-Item -LiteralPath "$root\Install.ps1" -Destination $package -Force
 Copy-Item -LiteralPath "$root\README.md" -Destination $package -Force
 foreach($license in @('REFramework_LICENSE','RhyLive_LICENSE')){Copy-Item -LiteralPath "$root\vendor\$license" -Destination $package -Force}

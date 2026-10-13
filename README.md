@@ -1,6 +1,6 @@
-Maintenance release: **0.4.1** — bundles and installs the native animation conversion table; existing user tables are preserved.
+Maintenance release: **0.4.2-beta.1** — pre-release with optional nine-input model mapping and safe runtime upgrades.
 
-维护版本：**0.4.1** — 补齐原生动画换算表的打包和安装，保留已有用户配置。
+维护版本：**0.4.2-beta.1** — 预发布：可选九输入映射与安全运行时升级，保留用户数据。
 
 # RE4R ShapeKey Studio
 
@@ -45,7 +45,7 @@ The desktop app talks to the game over a local named pipe (no network port). The
 ### Requirements
 
 - Resident Evil 4 Remake with a REFramework build that works with your game version.
-- A character mod that ships custom shape keys **and** the profile `reframework/data/RE4R_ShapeKeySystem_profile.json` (this tool contains no models; writing shape keys into `.mesh` files needs tooling that is not yet public).
+- A character mod that ships custom shape keys **and** the profile `reframework/data/RE4R_ShapeKeySystem_profile.json` (this tool contains no models; model authoring uses the exporter toolchain described below; this repository does not bundle model assets).
 - Windows 10 / 11 x64 and the **Microsoft Edge WebView2 Runtime** (included with Windows 11 and with Edge; 0.4 only). **No .NET and no Visual C++ redistributable are needed.**
 
 ### Install and first run (players)
@@ -144,7 +144,7 @@ Studio 0.4 功能：
 ### 需求
 
 - 与你的游戏版本匹配的 REFramework。
-- 带自定义形态键、并附带 `reframework/data/RE4R_ShapeKeySystem_profile.json` 的角色 MOD（本工具不含任何模型；把形态键写入 `.mesh` 需要尚未公开的工具）。
+- 带自定义形态键、并附带 `reframework/data/RE4R_ShapeKeySystem_profile.json` 的角色 MOD（本工具不含任何模型；模型制作需要下述导出器工具链，本仓库不附带模型资产）。
 - Windows 10 / 11 x64 与 **Microsoft Edge WebView2 运行时**（Windows 11 和 Edge 自带；仅 0.4 需要）。**不需要 .NET，也不需要 Visual C++ 运行库。**
 
 ### 玩家安装与首次使用
@@ -209,3 +209,15 @@ License: MIT。见 [LICENSE](LICENSE)；第三方组件保留各自原许可证�
 Native animation conversion: the package includes `reframework/data/RE4R_ShapeKeySystem_native_leon.json`. Clean installations install it; an existing file is preserved with a message. `json.load_file` in REFramework reads this filename under `reframework/data`.
 
 原生动画换算：包内包含 `reframework/data/RE4R_ShapeKeySystem_native_leon.json`；干净安装会写入，已有文件会提示并保留。REFramework 的 `json.load_file` 从 `reframework/data` 读取此文件名。
+
+
+
+### 0.4.2-beta.1 toolchain and upgrade / 工具链与升级
+
+The public [GPLv3 exporter v0.70.6-re4r.1](https://github.com/Funnyguysmz/RE-Mesh-Editor-BlendShape/releases/tag/v0.70.6-re4r.1) provides optional nine zero-delta inputs and packed/base-normal/no-normalRecalc output. Base cylindrical normals, Head binding and a model-specific profile still require authoring. Toon normals are not necessarily overwritten; per-expression normal mixing and the integrated94-channel combination are not universally verified. See [toolchain and recovery guide](docs/TOOLCHAIN.md).
+
+九输入与保留基础三渲二法线的导出路线已有公开预发布；圆柱基础法线、Head绑定和模型profile仍需制作。现有91/NoTap与用户数据保留，普通安装保留脚本主体，显式升级会备份；详见[工具链与回退说明](docs/TOOLCHAIN.md)。新集成94通道组合仍待独立实机反馈。
+
+Bundled runtime: [System 0.4.5-rc.1](https://github.com/Funnyguysmz/RE4R-ShapeKey-System/releases/tag/v0.4.5-rc.1), with Studio's bridge appended by the build. The synthetic profile is documentation/test data only and is never installed as the active model profile.
+
+随包运行时为System 0.4.5-rc.1，构建时追加Studio桥接；合成profile仅作合同示例，不安装为活动配置。

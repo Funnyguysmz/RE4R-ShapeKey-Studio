@@ -28,6 +28,11 @@ local function desktop_mesh(k)
 end
 local function desktop_writable(k)
     local e=desktop_mesh(k)
+    if type(native_key)=='function' and native_key(k) then return false end
+    if type(read_weight)=='function' then
+        local value=read_weight(e,k.ch)
+        return e and k.ch and finite(value) and k.ch>=0 and k.ch<(e.limit or 0)
+    end
     local count=e and tonumber(call(e.mesh,'get_BlendShapeChannelWeightCount'))
     return e and k.ch and finite(count) and k.ch>=0 and k.ch<math.min(count,e.limit or 0)
 end

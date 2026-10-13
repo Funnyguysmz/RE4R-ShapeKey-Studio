@@ -1,20 +1,23 @@
-﻿param([Parameter(Mandatory=$true)][string]$GameDirectory)
+﻿param([Parameter(Mandatory=$true)][string]$GameDirectory,[switch]$UpdateShapeKeyRuntime)
 $ErrorActionPreference = 'Stop'
 $gameRoot = [IO.Path]::GetFullPath($GameDirectory).TrimEnd('\')
 if (!(Test-Path -LiteralPath (Join-Path $gameRoot 're4.exe') -PathType Leaf)) { throw 'GameDirectory must contain re4.exe.' }
 if (Get-Process -Name re4 -ErrorAction SilentlyContinue) { throw 'Close RE4 before installing the bridge.' }
 $packageRoot = $PSScriptRoot
 $planned = @()
-$nativeRelative='reframework\data\RE4R_ShapeKeySystem_native_leon.json'
-$nativeTarget=Join-Path $gameRoot $nativeRelative
-if(!(Test-Path -LiteralPath $nativeTarget)){
+foreach($nativeName in @('RE4R_ShapeKeySystem_native_leon.json','RE4R_ShapeKeySystem_native_leon_mouth9.json')){
+    $nativeRelative='reframework\data\'+$nativeName
+    $nativeTarget=Join-Path $gameRoot $nativeRelative
     $nativeSource=Join-Path $packageRoot $nativeRelative
-    $nativeText=[IO.File]::ReadAllText($nativeSource,[Text.Encoding]::UTF8)
-    $nativeConfig=$nativeText | ConvertFrom-Json
-    if($nativeConfig.format -ne 1 -or !$nativeConfig.joints){throw 'Invalid bundled native conversion table. No files changed.'}
-    $planned+=@{relative=$nativeRelative;bytes=[IO.File]::ReadAllBytes($nativeSource)}
-} else {
-    Write-Output "Preserving existing native conversion table: $nativeTarget"
+    if($nativeName -eq 'RE4R_ShapeKeySystem_native_leon_mouth9.json' -and !(Test-Path -LiteralPath $nativeSource)){continue}
+    if(!(Test-Path -LiteralPath $nativeTarget)){
+        $nativeText=[IO.File]::ReadAllText($nativeSource,[Text.Encoding]::UTF8)
+        $nativeConfig=$nativeText | ConvertFrom-Json
+        if($nativeConfig.format -ne 1 -or !$nativeConfig.joints -or !$nativeConfig.rules){throw 'Invalid bundled native conversion table. No files changed.'}
+        $planned+=@{relative=$nativeRelative;bytes=[IO.File]::ReadAllBytes($nativeSource)}
+    } else {
+        Write-Output "Preserving existing native conversion table: $nativeTarget"
+    }
 }
 foreach ($scriptSpec in @(
     @{name='RE4R_ShapeKeySystem.lua';adapter='runtime_adapter.lua';marker='RE4R_DESKTOP_BRIDGE';required=@('key_by_id','local function still_valid','local function zero_written','local function save_settings')},
@@ -22,8 +25,13 @@ foreach ($scriptSpec in @(
 )) {
     $relative = 'reframework\autorun\'+$scriptSpec.name
     $target = Join-Path $gameRoot $relative
-    $basePath = if(Test-Path -LiteralPath $target){$target}else{Join-Path $packageRoot $relative}
+    $replaceShape=$UpdateShapeKeyRuntime -and $scriptSpec.name -eq 'RE4R_ShapeKeySystem.lua'
+    if($replaceShape){Write-Output 'Updating ShapeKey runtime by explicit request; the previous script will be backed up. Profiles and mapping files are preserved.'}
+    $basePath = if((Test-Path -LiteralPath $target) -and !$replaceShape){$target}else{Join-Path $packageRoot $relative}
     $text = [IO.File]::ReadAllText($basePath)
+    if($scriptSpec.name -eq 'RE4R_ShapeKeySystem.lua' -and !$replaceShape -and (Test-Path -LiteralPath $target) -and (Test-Path -LiteralPath (Join-Path $packageRoot 'reframework\data\RE4R_ShapeKeySystem_native_leon_mouth9.json')) -and !$text.Contains('native_map_file')){
+        Write-Output 'Existing ShapeKey runtime preserved. The optional 9-input model needs the newer runtime; choose -UpdateShapeKeyRuntime only if you want to back up and replace that script.'
+    }
     $marker = $scriptSpec.marker
     $text = [regex]::Replace($text,"(?s)\r?\n?-- ${marker}_BEGIN.*?-- ${marker}_END\r?\n?",'')
     foreach ($probe in $scriptSpec.required) {if(!$text.Contains($probe)){throw "Unsupported runtime $($scriptSpec.name): $probe missing. No files changed."}}
